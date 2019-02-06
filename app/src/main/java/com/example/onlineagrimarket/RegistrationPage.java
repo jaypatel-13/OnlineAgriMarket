@@ -22,11 +22,17 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nullable;
 
 public class RegistrationPage extends AppCompatActivity {
     private static final String TAG = "RegistrationPage";
@@ -111,7 +117,7 @@ public class RegistrationPage extends AppCompatActivity {
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                Toast.makeText(RegistrationPage.this,"verification completed", Toast.LENGTH_SHORT).show();
+    //            Toast.makeText(RegistrationPage.this,"verification completed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -158,8 +164,32 @@ public class RegistrationPage extends AppCompatActivity {
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(phNumber, 60, TimeUnit.SECONDS,RegistrationPage.this, mCallback);
                 if (flag !=0)
                 {
-                    addUser();
+                    db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            int flag = 0 ;
+                            for(DocumentSnapshot ds : queryDocumentSnapshots)
+                            {
+                                String pNumber;
+                                pNumber = ds.getString("phoneNumber");
+                                if(pNumber.equals(phNumber))
+                                {
+                                    flag = 1;
+                                    break;
+                                }
+                            }
+                            if(flag == 1)
+                            {
+                                Toast.makeText(RegistrationPage.this,"Number already registered.",Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                addUser();
+                            }
+                        }
+                    });
                 }
+
             }
 
         });
