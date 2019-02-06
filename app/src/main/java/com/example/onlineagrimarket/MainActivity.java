@@ -2,6 +2,7 @@ package com.example.onlineagrimarket;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,47 +37,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startDatabase();
-//        StartFirebaseLogin();
         addListenerOnButton();
-
+    //    usr = new User();
     }
 
-    FirebaseAuth auth;
-/*    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback;
 
-    private void StartFirebaseLogin() {
-
-        auth = FirebaseAuth.getInstance();
-        mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            int flag = 0;
-
-            @Override
-            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-
-                Intent intent = new Intent(MainActivity.this, LoginType.class);
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onVerificationFailed(FirebaseException e) {
-                Toast.makeText(MainActivity.this,"verification failed",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                Intent intent = new Intent(MainActivity.this, LoginType.class);
-                startActivity(intent);
-            }
-
-
-
-        };
-    }
-*/
+//    User usr;
+    SharedPreferences sharedpreferences;
     String phNumber;
     Button register, login;
     EditText phoneNumber;
+    String firstName, lastName;
     private FirebaseFirestore db;
     private void startDatabase()
     {
@@ -93,19 +64,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 phNumber = phoneNumber.getText().toString();
-           //     PhoneAuthProvider.getInstance().verifyPhoneNumber(phNumber, 60, TimeUnit.SECONDS,MainActivity.this, mCallback);
-
-          //      Query num = db.collection("Users").whereEqualTo("phoneNumber", phNumber);
-            //   if ( !num.equals(null)) {
-
-            //        Intent intent = new Intent(MainActivity.this, LoginType.class);
-             //       startActivity(intent);
-              //  }
-            //    else
-            //    {
-             //       Toast.makeText(MainActivity.this,"Number not registered." + num.toString(),Toast.LENGTH_SHORT).show();
-              //  }
-
 
                 db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -117,13 +75,21 @@ public class MainActivity extends AppCompatActivity {
                             pNumber = ds.getString("phoneNumber");
                             if(pNumber.equals(phNumber))
                             {
-                                flag = 1;
+                                firstName = ds.getString("firstName");
+                                lastName = ds.getString("lastName");
+/*
+                                usr.setFirstname(firstName);
+                                usr.setLastname(lastName);
+                                usr.setPhoneNumber(phNumber);
+  */                              flag = 1;
                                 break;
                             }
                         }
                         if(flag == 1)
                         {
+
                             Intent intent = new Intent(MainActivity.this, LoginType.class);
+                            //intent.putExtra("user", String.valueOf(usr));
                             startActivity(intent);
                         }
                         else
@@ -148,8 +114,5 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
-
-
     }
 }

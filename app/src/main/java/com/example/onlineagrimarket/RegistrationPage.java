@@ -2,6 +2,7 @@ package com.example.onlineagrimarket;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ public class RegistrationPage extends AppCompatActivity {
     Button btn6, btn7;
     EditText phoneNumber,etOTP,firstName,lastName,eMail;
     String phNumber;
+
 
     private void findViews()
     {
