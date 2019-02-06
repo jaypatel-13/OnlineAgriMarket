@@ -2,38 +2,47 @@ package com.example.onlineagrimarket;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class RegistrationPage extends AppCompatActivity {
-
+    private static final String TAG = "RegistrationPage";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
         findViews();
         StartFirebaseLogin();
+        startDatabase();
         addListenerOnButton();
     }
 
-
-   // private DatabaseReference mDatabase;
+    // Access a Cloud Firestore instance from your Activity
+    private FirebaseFirestore db;
     private FirebaseAuth auth;
     private String verificationCode;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback;
     Button btn6, btn7;
-    EditText phoneNumber,etOTP,firstName,lastName;
+    EditText phoneNumber,etOTP,firstName,lastName,eMail;
     String phNumber;
 
     private void findViews()
@@ -44,12 +53,45 @@ public class RegistrationPage extends AppCompatActivity {
         etOTP=findViewById(R.id.editText6);
         firstName = findViewById(R.id.editText);
         lastName = findViewById(R.id.editText8);
+        eMail = findViewById(R.id.editText5);
 
     }
 
-    private PhoneAuthProvider.ForceResendingToken force;
-    private void StartFirebaseLogin() {
+    void addUser()
+    {
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("firstName", firstName.getText().toString().trim());
+        user.put("lastName", lastName.getText().toString().trim());
+        user.put("phoneNumber",phNumber.trim());
+        user.put("e-mail", eMail.getText().toString().trim());
 
+// Add a new document with a generated ID
+        db.collection("Users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
+//                        Toast.makeText(RegistrationPage.this,"User added with ID: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+  //                      Toast.makeText(RegistrationPage.this,"Error adding user.", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+    private void startDatabase()
+    {
+        db = FirebaseFirestore.getInstance();
+    }
+    private int flag;
+    private void StartFirebaseLogin() {
+        flag=1;
         auth = FirebaseAuth.getInstance();
         mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -60,24 +102,24 @@ public class RegistrationPage extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
+                flag = 0;
                 Toast.makeText(RegistrationPage.this,"verification failed",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                // super.onCodeSent(s, forceResendingToken);
+                 super.onCodeSent(s, forceResendingToken);
                 verificationCode = s;
-                force = forceResendingToken;
                 Toast.makeText(RegistrationPage.this,"Code Sent ",Toast.LENGTH_SHORT).show();
             }
         };
     }
 
 
+
     public void addListenerOnButton() {
 
         final Context context = this;
-        //   btn6=findViewById(R.id.button6);
         btn6.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -85,6 +127,10 @@ public class RegistrationPage extends AppCompatActivity {
 
                 phNumber=phoneNumber.getText().toString();
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(phNumber, 60, TimeUnit.SECONDS,RegistrationPage.this, mCallback);
+                if (flag !=0)
+                {
+                    addUser();
+                }
             }
 
         });
@@ -93,10 +139,8 @@ public class RegistrationPage extends AppCompatActivity {
             @Override
             public void onClick(View ard0){
                 String input_code = etOTP.getText().toString();
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode,input_code);
-                //        addUser();
 
-                if(verificationCode.equals(etOTP))
+                if(verificationCode.equals(input_code))
                 {
                     startActivity(new Intent(RegistrationPage.this, LoginType.class));
                 } else
