@@ -11,9 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -115,7 +118,22 @@ public class RegistrationPage extends AppCompatActivity {
         };
     }
 
+    private void SigninWithPhone(PhoneAuthCredential credential) {
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(RegistrationPage.this, LoginType.class));
+                            finish();
+                        } else
+                        {
+                            Toast.makeText(RegistrationPage.this, "Incorrect OTP", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
+    }
 
     public void addListenerOnButton() {
 
@@ -138,15 +156,10 @@ public class RegistrationPage extends AppCompatActivity {
         btn7.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View ard0){
-                String input_code = etOTP.getText().toString();
-
-                if(verificationCode.equals(input_code))
-                {
-                    startActivity(new Intent(RegistrationPage.this, LoginType.class));
-                } else
-                {
-                    Toast.makeText(RegistrationPage.this, "Incorrect OTP", Toast.LENGTH_SHORT).show();
-                }
+                String input_code = etOTP.getText().toString().trim();
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode,input_code);
+                SigninWithPhone(credential);
+                
             }
         });
 
