@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">OnlineAgriMarket</string>
+
+    <string-array name="commodity_arrays">
+        <item>Patato</item>
+        <item>Corn</item>
+        <item>Banana</item>
+    </string-array>
+
+    <string-array name="variety_arrays">
+        <item>Variety1</item>
+        <item>Variety2</item>
+        <item>Variety3</item>
+    </string-array>
+
+    <string-array name="Quality_arrays">
+        <item>Grade A</item>
+        <item>Grade B</item>
+        <item>Grade C</item>
+    </string-array>
+
+    <string-array name="Location_arrays">
+        <item>Ahmedabad</item>
+        <item>Surat</item>
+        <item>Baroda</item>
+        <item>Nadiad</item>
+    </string-array>
+</resources>
