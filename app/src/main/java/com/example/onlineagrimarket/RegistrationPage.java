@@ -69,21 +69,19 @@ public class RegistrationPage extends AppCompatActivity {
         user.put("phoneNumber",phNumber.trim());
         user.put("e-mail", eMail.getText().toString().trim());
 
-// Add a new document with a generated ID
+        // Add a new document with a generated ID
         db.collection("Users")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
-//                        Toast.makeText(RegistrationPage.this,"User added with ID: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Error adding document", e);
-  //                      Toast.makeText(RegistrationPage.this,"Error adding user.", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -159,7 +157,7 @@ public class RegistrationPage extends AppCompatActivity {
                 String input_code = etOTP.getText().toString().trim();
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCode,input_code);
                 SigninWithPhone(credential);
-                
+
             }
         });
 
