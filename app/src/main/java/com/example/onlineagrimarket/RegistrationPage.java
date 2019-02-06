@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -60,22 +61,22 @@ public class RegistrationPage extends AppCompatActivity {
 
     }
 
-    void addUser()
-    {
+    void addUser() {
+        DocumentReference docRef = db.collection("Users").document();
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
         user.put("firstName", firstName.getText().toString().trim());
         user.put("lastName", lastName.getText().toString().trim());
-        user.put("phoneNumber",phNumber.trim());
+        user.put("phoneNumber", phNumber.trim());
         user.put("e-mail", eMail.getText().toString().trim());
 
         // Add a new document with a generated ID
-        db.collection("Users")
+       /* db.collection("Users")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -84,7 +85,19 @@ public class RegistrationPage extends AppCompatActivity {
                         Log.w(TAG, "Error adding document", e);
 
                     }
-                });
+                });*/
+        docRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot added.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error adding document", e);
+            }
+        });
+
     }
     private void startDatabase()
     {
