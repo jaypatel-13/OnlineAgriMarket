@@ -6,4 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".BuyPage">
 
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="31dp"
+            android:text="Feed"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

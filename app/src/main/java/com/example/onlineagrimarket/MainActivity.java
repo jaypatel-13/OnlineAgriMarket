@@ -39,11 +39,23 @@ public class MainActivity extends AppCompatActivity {
         startDatabase();
         addListenerOnButton();
     //    usr = new User();
+
+    //    sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
     }
 
 
 //    User usr;
-    SharedPreferences sharedpreferences;
+
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String fName = "fnameKey";
+    public static final String lName = "lnameKey";
+    public static final String Phone = "phoneKey";
+  //  SharedPreferences sharedpreferences;
+
+
+
     String phNumber;
     Button register, login;
     EditText phoneNumber;
@@ -77,7 +89,15 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 firstName = ds.getString("firstName");
                                 lastName = ds.getString("lastName");
-/*
+              /*                  SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                                editor.putString(fName, firstName);
+                                editor.putString(lName, lastName);
+                                editor.putString(Phone, phNumber);
+                                editor.apply();
+*/
+
+                                /*
                                 usr.setFirstname(firstName);
                                 usr.setLastname(lastName);
                                 usr.setPhoneNumber(phNumber);
@@ -87,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(flag == 1)
                         {
-
                             Intent intent = new Intent(MainActivity.this, LoginType.class);
                             //intent.putExtra("user", String.valueOf(usr));
                             startActivity(intent);

@@ -3,6 +3,7 @@ package com.example.onlineagrimarket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ public class SellPage2 extends AppCompatActivity {
         startDatabase();
         addListenerOnButton();
    //     usr = new User();
+  //      SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+
     }
     //User usr;
     private FirebaseFirestore db;
@@ -45,7 +48,13 @@ public class SellPage2 extends AppCompatActivity {
    /*     firstName = usr.getFirstname();
         lastName = usr.getLastname();
         phoneNumber = usr.getPhoneNumber();
-    */
+
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        firstName = sharedpreferences.getString("fnamekey","");
+        lastName = sharedpreferences.getString("lnamekey","");
+        phoneNumber = sharedpreferences.getString("phonekey","");
+*/
+
     }
 
     private void startDatabase()
@@ -55,6 +64,7 @@ public class SellPage2 extends AppCompatActivity {
     void postFeed()
     {
         // Create a new user with a first and last name
+        DocumentReference docRef = db.collection("Feeds").document();
 
         Map<String, Object> feed = new HashMap<>();
         feed.put("Commodity", commodity);
@@ -68,21 +78,33 @@ public class SellPage2 extends AppCompatActivity {
 
 
         // Add a new document with a generated ID
-        db.collection("Feeds")
-                .add(feed)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+//        db.collection("Feeds")
+//                .add(feed)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d(TAG,"DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error adding document", e);
+//
+//                    }
+//                });
+        docRef.set(feed).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot added.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error adding document", e);
+            }
+        });
 
-                    }
-                });
     }
 
     public void addListenerOnButton() {
