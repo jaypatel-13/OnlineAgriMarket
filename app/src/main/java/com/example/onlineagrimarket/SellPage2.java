@@ -26,11 +26,9 @@ public class SellPage2 extends AppCompatActivity {
         getData();
         startDatabase();
         addListenerOnButton();
-   //     usr = new User();
-  //      SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
 
     }
-    //User usr;
     private FirebaseFirestore db;
     Button btn;
     String commodity, variety, quantity, quality, location;
@@ -45,15 +43,12 @@ public class SellPage2 extends AppCompatActivity {
         location = intent.getStringExtra("loc");
 
 
-   /*     firstName = usr.getFirstname();
-        lastName = usr.getLastname();
-        phoneNumber = usr.getPhoneNumber();
 
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-        firstName = sharedpreferences.getString("fnamekey","");
-        lastName = sharedpreferences.getString("lnamekey","");
-        phoneNumber = sharedpreferences.getString("phonekey","");
-*/
+        firstName = sharedpreferences.getString("fnameKey","");
+        lastName = sharedpreferences.getString("lnameKey","");
+        phoneNumber = sharedpreferences.getString("phoneKey","");
+
 
     }
 

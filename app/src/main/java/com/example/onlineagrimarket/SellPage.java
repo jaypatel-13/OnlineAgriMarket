@@ -1,9 +1,13 @@
 package com.example.onlineagrimarket;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +25,7 @@ public class SellPage extends AppCompatActivity {
         setContentView(R.layout.activity_sell_page);
         findViews();
         addListenerOnButton();
+        toggleMenu();
     }
 
     Button btn;
@@ -36,7 +41,31 @@ public class SellPage extends AppCompatActivity {
         quantity = findViewById(R.id.editText4);
         btn = findViewById(R.id.button3);
     }
+    private DrawerLayout mDrawer;
+    private ActionBarDrawerToggle mToggle;
+    View home;
+    ClipData.Item about;
+    ClipData.Item logout;
+    ClipData.Item contact;
+    private void toggleMenu()
+    {
+        mDrawer = findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this,mDrawer,R.string.open,R.string.close);
 
+        mDrawer.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     public void addListenerOnButton() {
 
         btn.setOnClickListener(new View.OnClickListener() {

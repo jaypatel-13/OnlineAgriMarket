@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".SellPage">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.jp.onlineagrimarket.SellPage"
-        tools:layout_editor_absoluteY="81dp">
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigationView2"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/navigation_menu"
+            app:headerLayout="@layout/navigation_header"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.example.jp.onlineagrimarket.SellPage"
+            tools:layout_editor_absoluteY="81dp">
 
         <Spinner
             android:id="@+id/spinner2"
@@ -178,5 +192,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="20dp" />
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.DrawerLayout>
 </android.support.constraint.ConstraintLayout>
