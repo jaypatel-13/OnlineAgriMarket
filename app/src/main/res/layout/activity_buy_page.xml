@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".BuyPage">
 
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/feed"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        />
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
@@ -17,36 +26,26 @@
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:menu="@menu/navigation_menu"
-            app:headerLayout="@layout/navigation_header">
+            app:headerLayout="@layout/navigation_header"
+            app:menu="@menu/navigation_menu">
 
         </android.support.design.widget.NavigationView>
 
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <LinearLayout
-                        android:id="@+id/rootLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="30dp">
 
-                        <TextView
-                            android:id="@+id/textView10"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="31dp"
-                            android:text="Feed"
-                            android:textAlignment="center"
-                            android:textSize="24sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:id="@+id/rootLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+            </LinearLayout>
 
-                    </LinearLayout>
-                </ScrollView>
+        </ScrollView>
 
     </android.support.v4.widget.DrawerLayout>
 </android.support.constraint.ConstraintLayout>

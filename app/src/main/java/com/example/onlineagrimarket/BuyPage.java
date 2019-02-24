@@ -2,10 +2,12 @@ package com.example.onlineagrimarket;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.support.annotation.ColorInt;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,7 +67,8 @@ public class BuyPage extends AppCompatActivity {
 
 
     private LinearLayout linearLayout;
-    private TextView commView,locView, qualView, quanView, varView, partView, contView, sellView;
+    private CardView cardView;
+    private TextView textView,commView,locView, qualView, quanView, varView, partView, contView, sellView;
     private void showFeed()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -83,57 +86,28 @@ public class BuyPage extends AppCompatActivity {
 
 
                     linearLayout = findViewById(R.id.rootLayout);
-                    commView = new TextView(BuyPage.this);
-                    commView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    commView.setGravity(Gravity.CENTER);
-                    commView.setText("Commodity :" + commodity);
 
-                    locView = new TextView(BuyPage.this);
-                    locView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    locView.setGravity(Gravity.CENTER);
-                    locView.setText("Selling from : " + location);
+                    cardView = new CardView(BuyPage.this);
+                    cardView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    cardView.setRadius(20);
+                    cardView.setElevation(4);
+                    cardView.setCardBackgroundColor(0xff2ecc71);
 
-                    qualView = new TextView(BuyPage.this);
-                    qualView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    qualView.setGravity(Gravity.CENTER);
-                    qualView.setText("Quality : " + quality);
-
-                    quanView = new TextView(BuyPage.this);
-                    quanView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    quanView.setGravity(Gravity.CENTER);
-                    quanView.setText("Quantity : " + quantity + "quintals");
-
-                    varView = new TextView(BuyPage.this);
-                    varView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    varView.setGravity(Gravity.CENTER);
-                    varView.setText("Variety : " + variety);
-
-                    sellView = new TextView(BuyPage.this);
-                    sellView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    sellView.setGravity(Gravity.CENTER);
-                    sellView.setText("Seller : " + name);
-
-                    contView = new TextView(BuyPage.this);
-                    contView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    contView.setGravity(Gravity.CENTER);
-                    contView.setText("Contact : " + phone);
+                    textView = new TextView(BuyPage.this);
+                    textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    textView.setGravity(Gravity.CENTER);
+                    textView.setPadding(50,15,0,15);
+                    textView.setText("Seller :" + name + "\nCommodity : " + commodity + "\nVariety : " +variety + "\nQuality : " + quality + "\nQuantity : " + quantity +  " quintals" + "\nLocation : " + location + "\nContact : " + phone);
 
                     partView = new TextView(BuyPage.this);
                     partView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     partView.setGravity(Gravity.CENTER);
-                    partView.setText("=================");
-                    // Add TextView to LinearLayout
+                    partView.setText(" ");
 
                     if (linearLayout != null) {
-                        linearLayout.addView(sellView);
-                        linearLayout.addView(commView);
-                        linearLayout.addView(varView);
-                        linearLayout.addView(qualView);
-                        linearLayout.addView(quanView);
-                        linearLayout.addView(locView);
-                        linearLayout.addView(contView);
+                        linearLayout.addView(cardView);
+                        cardView.addView(textView);
                         linearLayout.addView(partView);
-
                     }
                 }
             }
