@@ -3,6 +3,7 @@ package com.example.onlineagrimarket;
 import android.content.ClipData;
 import android.content.Intent;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,41 +35,53 @@ public class BuyPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_page);
         showFeed();
-        toggleMenu();
     }
-    private DrawerLayout mDrawer;
-    private ActionBarDrawerToggle mToggle;
 
-
-    private void toggleMenu()
-    {
-        mDrawer = findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this,mDrawer,R.string.open,R.string.close);
-
-        mDrawer.addDrawerListener(mToggle);
-        mToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.navigation_menu, menu);
+        return true;
+    }
+    Intent intent;
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
+
             switch(item.getItemId()){
                 case R.id.nav_home:
-                    Intent intent = new Intent(BuyPage.this, LoginType.class);
+                    intent = new Intent(BuyPage.this, LoginType.class);
                     startActivity(intent);
                     return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
+
+                case R.id.nav_about :
+                    intent = new Intent(BuyPage.this, About.class);
+                    startActivity(intent);
+                    return true;
+
+
+                case R.id.nav_contact:
+                    intent = new Intent(BuyPage.this, Contact.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.nav_profile:
+                    Intent intent = new Intent(BuyPage.this, Profile.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.nav_logout:
+
+        }return super.onOptionsItemSelected(item);
     }
+
+
 
 
     private LinearLayout linearLayout;
     private CardView cardView;
-    private TextView textView,commView,locView, qualView, quanView, varView, partView, contView, sellView;
+    private TextView textView, partView;
     private void showFeed()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -113,4 +126,5 @@ public class BuyPage extends AppCompatActivity {
             }
         });
     }
+
 }

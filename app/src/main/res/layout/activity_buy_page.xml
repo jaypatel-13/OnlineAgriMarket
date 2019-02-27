@@ -15,24 +15,7 @@
         android:textSize="24sp"
         />
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/navigationView2"
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/navigation_header"
-            app:menu="@menu/navigation_menu">
-
-        </android.support.design.widget.NavigationView>
-
-
-        <ScrollView
+           <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="30dp">
@@ -47,5 +30,5 @@
 
         </ScrollView>
 
-    </android.support.v4.widget.DrawerLayout>
+
 </android.support.constraint.ConstraintLayout>
