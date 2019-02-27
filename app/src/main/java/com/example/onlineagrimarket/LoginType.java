@@ -3,6 +3,7 @@ package com.example.onlineagrimarket;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
 
 public class LoginType extends AppCompatActivity {
 
@@ -53,11 +56,25 @@ public class LoginType extends AppCompatActivity {
                 return true;
 
             case R.id.nav_profile:
-                Intent intent = new Intent(LoginType.this, Profile.class);
+                intent = new Intent(LoginType.this, Profile.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_myposts:
+                intent = new Intent(LoginType.this, MyPosts.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_logout:
+                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                intent = new Intent(LoginType.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
 
         }return super.onOptionsItemSelected(item);
     }
@@ -77,6 +94,7 @@ public class LoginType extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginType.this, SellPage.class);
                 startActivity(intent);
+                finish();
 
             }
 
@@ -90,7 +108,7 @@ public class LoginType extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginType.this, BuyPage.class);
                 startActivity(intent);
-
+                finish();
             }
 
         });

@@ -1,11 +1,15 @@
 package com.example.onlineagrimarket;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
 
 public class Contact extends AppCompatActivity {
 
@@ -44,11 +48,25 @@ public class Contact extends AppCompatActivity {
                 return true;
 
             case R.id.nav_profile:
-                Intent intent = new Intent(Contact.this, Profile.class);
+                intent = new Intent(Contact.this, Profile.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_myposts:
+                intent = new Intent(Contact.this, MyPosts.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_logout:
+                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                intent = new Intent(Contact.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
 
         }return super.onOptionsItemSelected(item);
     }

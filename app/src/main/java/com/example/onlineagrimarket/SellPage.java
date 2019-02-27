@@ -3,6 +3,7 @@ package com.example.onlineagrimarket;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
 
 public class SellPage extends AppCompatActivity {
 
@@ -74,11 +77,25 @@ public class SellPage extends AppCompatActivity {
                 return true;
 
             case R.id.nav_profile:
-                Intent intent = new Intent(SellPage.this, Profile.class);
+                intent = new Intent(SellPage.this, Profile.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_myposts:
+                intent = new Intent(SellPage.this, MyPosts.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_logout:
+                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                intent = new Intent(SellPage.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
 
         }return super.onOptionsItemSelected(item);
     }

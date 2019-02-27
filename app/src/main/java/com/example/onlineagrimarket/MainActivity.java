@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             Intent intent = new Intent(MainActivity.this, LoginType.class);
                             startActivity(intent);
+                            finish();
                         }
                         else
                         {
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, RegistrationPage.class);
                 startActivity(intent);
-
+                finish();
             }
 
         });

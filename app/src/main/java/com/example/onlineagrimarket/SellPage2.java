@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
+
 public class SellPage2 extends AppCompatActivity {
     private static final String TAG = "SellPage2";
 
@@ -102,11 +104,26 @@ public class SellPage2 extends AppCompatActivity {
                 return true;
 
             case R.id.nav_profile:
-                Intent intent = new Intent(SellPage2.this, Profile.class);
+                intent = new Intent(SellPage2.this, Profile.class);
                 startActivity(intent);
                 return true;
 
+            case R.id.nav_myposts:
+                intent = new Intent(SellPage2.this, MyPosts.class);
+                startActivity(intent);
+                return true;
+
+
             case R.id.nav_logout:
+                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                intent = new Intent(SellPage2.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
 
         }return super.onOptionsItemSelected(item);
     }
@@ -216,7 +233,7 @@ public class SellPage2 extends AppCompatActivity {
                 postFeed();
                 Intent intent = new Intent(SellPage2.this, LoginType.class);
                 startActivity(intent);
-
+                finish();
             }
         });
 /*
