@@ -7,11 +7,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,8 +28,7 @@ public class SellPage extends AppCompatActivity {
         setContentView(R.layout.activity_sell_page);
         findViews();
         addListenerOnButton();
-        toggleMenu();
-    }
+   }
 
     Button btn;
     Spinner commodity, variety, quality, location;
@@ -41,31 +43,46 @@ public class SellPage extends AppCompatActivity {
         quantity = findViewById(R.id.editText4);
         btn = findViewById(R.id.button3);
     }
-    private DrawerLayout mDrawer;
-    private ActionBarDrawerToggle mToggle;
-    View home;
-    ClipData.Item about;
-    ClipData.Item logout;
-    ClipData.Item contact;
-    private void toggleMenu()
-    {
-        mDrawer = findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this,mDrawer,R.string.open,R.string.close);
-
-        mDrawer.addDrawerListener(mToggle);
-        mToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.navigation_menu, menu);
+        return true;
     }
+
+
+    Intent intent;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.nav_home:
+                intent = new Intent(SellPage.this, LoginType.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_about :
+                intent = new Intent(SellPage.this, About.class);
+                startActivity(intent);
+                return true;
+
+
+            case R.id.nav_contact:
+                intent = new Intent(SellPage.this, Contact.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_profile:
+                Intent intent = new Intent(SellPage.this, Profile.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_logout:
+
+        }return super.onOptionsItemSelected(item);
+    }
+
     public void addListenerOnButton() {
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -89,4 +106,5 @@ public class SellPage extends AppCompatActivity {
             }
         });
     }
+
 }

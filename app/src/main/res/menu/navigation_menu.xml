@@ -7,8 +7,12 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@mipmap/baseline_home_black_48"
-        android:title="Home"
-        />
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:title="Your Profile" />
+
 
     <item
         android:id="@+id/nav_contact"
@@ -24,6 +28,4 @@
         android:id="@+id/nav_logout"
         android:icon="@mipmap/logout"
         android:title="Logout"/>
-
-
 </menu>

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         startDatabase();
         addListenerOnButton();
-        toggleMenu();
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
     }
@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String lName = "lnameKey";
     public static final String Phone = "phoneKey";
     SharedPreferences sharedpreferences;
-    private DrawerLayout mDrawer;
-    private ActionBarDrawerToggle mToggle;
 
 
     String phNumber;
@@ -61,26 +59,6 @@ public class MainActivity extends AppCompatActivity {
     EditText phoneNumber;
     String firstName, lastName;
     private FirebaseFirestore db;
-    private void toggleMenu()
-    {
-        mDrawer = findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this,mDrawer,R.string.open,R.string.close);
-
-        mDrawer.addDrawerListener(mToggle);
-        mToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-       if(mToggle.onOptionsItemSelected(item)){
-           return true;
-       }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void startDatabase()
     {
         db = FirebaseFirestore.getInstance();
@@ -148,5 +126,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        //final CharSequence[] items = { "Take Photo", "Choose from Library",
+        //"Cancel" };
+        //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        //builder.setTitle("Add Photo!");
+
+
     }
+
 }
