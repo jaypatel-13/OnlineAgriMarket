@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,6 +106,7 @@ public class BuyPage extends AppCompatActivity {
     private LinearLayout linearLayout;
     private CardView cardView;
     private TextView textView, partView;
+    private ImageView imageView;
     private void showFeed()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -118,7 +121,7 @@ public class BuyPage extends AppCompatActivity {
                     String variety = ds.getString("Variety");
                     String name = ds.getString("Seller");
                     String phone = ds.getString("Contact");
-
+                    String image = ds.getString("Image");
 
                     linearLayout = findViewById(R.id.rootLayout );
 
@@ -127,6 +130,12 @@ public class BuyPage extends AppCompatActivity {
                     cardView.setRadius(20);
                     cardView.setElevation(4);
                     cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.DKGRAY));
+
+//                    imageView = new ImageView(BuyPage.this);
+//                    imageView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//                    imageView.setImageURI(Uri.parse(image));
+//                    imageView.setPadding(20,10,20,0);
+
 
                     textView = new TextView(BuyPage.this);
                     textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -143,6 +152,7 @@ public class BuyPage extends AppCompatActivity {
                     if (linearLayout != null) {
                         linearLayout.addView(cardView);
                         cardView.addView(textView);
+  //                      cardView.addView(imageView);
                         linearLayout.addView(partView);
                     }
                 }

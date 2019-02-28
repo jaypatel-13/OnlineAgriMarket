@@ -149,20 +149,14 @@ public class MyPosts extends AppCompatActivity {
                         partView.setText(" ");
 
                         delete = new Button(MyPosts.this);
-                      //  delete.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         delete.setText("Delete");
                         delete.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                Query query = db.collection("Feeds").whereEqualTo("Commodity",commodity)
-//                                        .whereEqualTo("Quantity",quantity).whereEqualTo("Quality",quality)
-//                                        .whereEqualTo("Location",location).whereEqualTo("Variety",variety);
-
 
                                 db.collection("Feeds").document(ds.getId()).delete();
                                 Intent intent = new Intent(MyPosts.this, MyPosts.class);
                                 startActivity(intent);
-                                finish();
                             }
                         });
 

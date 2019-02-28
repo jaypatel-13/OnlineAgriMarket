@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -46,17 +48,26 @@ public class SellPage2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_page2);
+        findViews();
         getData();
         startDatabase();
         addListenerOnButton();
-        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-  //      ivImage = (ImageView) findViewById(R.id.ivImage);
     }
     private FirebaseFirestore db;
-    Button btn;
+    Button btn, btn5;
     String commodity, variety, quantity, quality, location;
     SharedPreferences sharedpreferences;
     String firstName, lastName, phoneNumber;
+    ImageView imgView;
+
+    private void findViews()
+    {
+        imgView = findViewById(R.id.imageView3);
+        btn = findViewById(R.id.button4);
+        btn5 = findViewById(R.id.button5);
+
+
+    }
     private void getData()
     {
         Intent intent = getIntent();
@@ -65,8 +76,6 @@ public class SellPage2 extends AppCompatActivity {
         quality = intent.getStringExtra("qual");
         quantity = intent.getStringExtra("quan");
         location = intent.getStringExtra("loc");
-
-
 
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         firstName = sharedpreferences.getString("fnameKey","");
@@ -134,6 +143,7 @@ public class SellPage2 extends AppCompatActivity {
     }
     void postFeed()
     {
+
         DocumentReference docRef = db.collection("Feeds").document();
 
         Map<String, Object> feed = new HashMap<>();
@@ -144,6 +154,8 @@ public class SellPage2 extends AppCompatActivity {
         feed.put("Location",location);
         feed.put("Seller",firstName+" "+lastName);
         feed.put("Contact",phoneNumber);
+
+    //    feed.put("Image",imgUri.toString().trim());
 
 
         docRef.set(feed).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -160,71 +172,34 @@ public class SellPage2 extends AppCompatActivity {
 
     }
 
-    /*
-    static final int REQUEST_CAMERA=0;
-    static final int SELECT_FILE=1;
-    private Button btnSelect;
-    private ImageView ivImage;
-    private String userChoosenTask;
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(userChoosenTask.equals("Take Photo"))
-                        cameraIntent();
-                    else if(userChoosenTask.equals("Choose from Library"))
-                        galleryIntent();
-                } else {
-                    //code for deny
-                }
-                break;
+
+    Uri imgUri;
+    private static final int PICK_IMAGE = 100;
+    private void openGallery()
+    {
+        Intent gallery = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery,PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
+        {
+            imgUri = data.getData();
+            imgView.setImageURI(imgUri);
         }
     }
 
-    private void cameraIntent()
-    {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,REQUEST_CAMERA);
-    }
-    private void galleryIntent()
-    {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
-    }
-    public void selectImage()
-    {
-
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Photo!");
-
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = Utility.checkPermission(SellPage2.this);
-                if (items[item].equals("Take Photo")) {
-                    userChoosenTask="Take Photo";
-                    if(result)
-                        cameraIntent();
-                } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask="Choose from Library";
-                    if(result)
-                        galleryIntent();
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    */
     public void addListenerOnButton() {
 
-        btn = findViewById(R.id.button4);
+
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener() {
 
@@ -233,56 +208,8 @@ public class SellPage2 extends AppCompatActivity {
                 postFeed();
                 Intent intent = new Intent(SellPage2.this, LoginType.class);
                 startActivity(intent);
-                finish();
+
             }
         });
-/*
-        btnSelect = (Button) findViewById(R.id.btnSelectPhoto);
-        btnSelect.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-*/
     }
-  /*  private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ivImage.setImageBitmap(thumbnail);
-    }
-
-    @SuppressWarnings("deprecation")
-    private void onSelectFromGalleryResult(Intent data) {
-
-        Bitmap bm=null;
-        if (data != null) {
-            try {
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ivImage.setImageBitmap(bm);
-    }
-*/
 }

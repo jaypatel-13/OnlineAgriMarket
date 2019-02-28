@@ -94,7 +94,7 @@ public class LoginType extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginType.this, SellPage.class);
                 startActivity(intent);
-                finish();
+
 
             }
 
@@ -108,7 +108,7 @@ public class LoginType extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginType.this, BuyPage.class);
                 startActivity(intent);
-                finish();
+
             }
 
         });

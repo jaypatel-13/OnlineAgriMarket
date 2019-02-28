@@ -3,6 +3,7 @@ package com.example.onlineagrimarket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.button.MaterialButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -10,7 +11,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,6 +35,7 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         showUser();
         getData();
+        addListenerOnButton();
     }
     private LinearLayout linearLayout;
     private TextView textView;
@@ -69,9 +73,6 @@ public class Profile extends AppCompatActivity {
 
                 }}
         });
-        {
-
-        }
     }
 
     @Override
@@ -125,4 +126,17 @@ public class Profile extends AppCompatActivity {
         }return super.onOptionsItemSelected(item);
     }
 
+    Button btn;
+    public void addListenerOnButton()
+    {
+        btn = findViewById(R.id.button11);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this,EditProfile.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
