@@ -51,6 +51,11 @@ public class About extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.nav_myhistory:
+                intent = new Intent(About.this, History.class);
+                startActivity(intent);
+                return true;
+
             case R.id.nav_myposts:
                 intent = new Intent(About.this, MyPosts.class);
                 startActivity(intent);

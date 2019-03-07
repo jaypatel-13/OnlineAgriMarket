@@ -112,6 +112,12 @@ public class Profile extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.nav_myhistory:
+                intent = new Intent(Profile.this, History.class);
+                startActivity(intent);
+                return true;
+
+
             case R.id.nav_logout:
                 SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();

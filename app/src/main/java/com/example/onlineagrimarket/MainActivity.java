@@ -2,6 +2,7 @@ package com.example.onlineagrimarket;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -65,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
     }
     public void addListenerOnButton() {
 
-        final Context context = this;
+//        final Context context = this;
+        Spinner cd = findViewById(R.id.spinner10);
+
+        final String code = cd.getSelectedItem().toString().trim();
 
         login = findViewById(R.id.btn_login);
         phoneNumber = findViewById(R.id.mobile_no);
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                phNumber = phoneNumber.getText().toString();
+                phNumber = code + " " + phoneNumber.getText().toString();
 
                 db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -133,7 +138,22 @@ public class MainActivity extends AppCompatActivity {
         //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         //builder.setTitle("Add Photo!");
 
-
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure?")
+                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("no", null).show();
+    }
 }

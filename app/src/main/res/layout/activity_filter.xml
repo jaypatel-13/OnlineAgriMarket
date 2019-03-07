@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Filter">
+
+    <Spinner
+        android:id="@+id/spinner13"
+        android:layout_width="93dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:entries="@array/fromQuantity_arrays"
+        app:layout_constraintStart_toEndOf="@+id/textView25"
+        app:layout_constraintTop_toBottomOf="@+id/spinner6" />
+
+    <Spinner
+        android:id="@+id/spinner6"
+        android:layout_width="189dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="15dp"
+        android:entries="@array/variety_arrays"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView24"
+        app:layout_constraintTop_toBottomOf="@+id/spinner5" />
+
+    <Spinner
+        android:id="@+id/spinner7"
+        android:layout_width="93dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="28dp"
+        android:entries="@array/toQuantity_arrays"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/spinner6" />
+
+    <Spinner
+        android:id="@+id/spinner8"
+        android:layout_width="189dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:entries="@array/Quality_arrays"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView29"
+        app:layout_constraintTop_toBottomOf="@+id/spinner13" />
+
+    <Spinner
+        android:id="@+id/spinner9"
+        android:layout_width="188dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="33dp"
+        android:entries="@array/Location_arrays"
+        app:layout_constraintStart_toEndOf="@+id/textView30"
+        app:layout_constraintTop_toBottomOf="@+id/spinner8" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="154dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Filter by :"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="126dp"
+        android:text="Commodity :"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="35dp"
+        android:text="Variety :"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="32dp"
+        android:text="Quantity :"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="63dp"
+        android:layout_marginTop="34dp"
+        android:text="Quality : "
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+    <TextView
+        android:id="@+id/textView30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="35dp"
+        android:text="Location :"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+    <Spinner
+        android:id="@+id/spinner5"
+        android:layout_width="189dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="16dp"
+        android:entries="@array/commodity_arrays"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView23"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="382dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="241dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:text="Submit"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner9" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="to"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/spinner13"
+        app:layout_constraintTop_toBottomOf="@+id/spinner6" />
+</android.support.constraint.ConstraintLayout>

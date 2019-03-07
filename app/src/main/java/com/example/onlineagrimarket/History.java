@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -16,20 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,12 +31,12 @@ import javax.annotation.Nullable;
 
 import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
 
-public class MyPosts extends AppCompatActivity {
+public class History extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_posts);
+        setContentView(R.layout.activity_history);
         getData();
         showFeed();
     }
@@ -60,33 +53,33 @@ public class MyPosts extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.nav_home:
-                intent = new Intent(MyPosts.this, LoginType.class);
+                intent = new Intent(History.this, LoginType.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_about :
-                intent = new Intent(MyPosts.this, About.class);
+                intent = new Intent(History.this, About.class);
                 startActivity(intent);
                 return true;
 
 
             case R.id.nav_contact:
-                intent = new Intent(MyPosts.this, Contact.class);
+                intent = new Intent(History.this, Contact.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_profile:
-                intent = new Intent(MyPosts.this, Profile.class);
+                intent = new Intent(History.this, Profile.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_myposts:
-                intent = new Intent(MyPosts.this, MyPosts.class);
+                intent = new Intent(History.this, MyPosts.class);
                 startActivity(intent);
                 return true;
 
             case R.id.nav_myhistory:
-                intent = new Intent(MyPosts.this, History.class);
+                intent = new Intent(History.this, History.class);
                 startActivity(intent);
                 return true;
 
@@ -96,7 +89,7 @@ public class MyPosts extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.clear();
                 editor.commit();
-                intent = new Intent(MyPosts.this, MainActivity.class);
+                intent = new Intent(History.this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
@@ -115,20 +108,19 @@ public class MyPosts extends AppCompatActivity {
 
     }
 
-    Button delete;
     private LinearLayout linearLayout;
     private CardView cardView;
-    private TextView textView, partView, posts, history;
+    private TextView textView, partView, posts;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ImageView imgView;
-    private void showFeed()
-    {
-        linearLayout = findViewById(R.id.rootLayout1);
-        linearLayout.setPadding(20,0,20,0);
 
-        posts = new TextView(MyPosts.this);
+    private void showFeed() {
+
+        linearLayout = findViewById(R.id.rootLayout3);
+        linearLayout.setPadding(20, 0, 20, 0);
+
+        posts = new TextView(History.this);
         posts.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        posts.setText("\nOngoing Deals\n");
+        posts.setText("\nMy History\n");
         posts.setGravity(Gravity.CENTER);
         posts.setTextSize(24);
         linearLayout.addView(posts);
@@ -143,62 +135,33 @@ public class MyPosts extends AppCompatActivity {
                     final String quantity = ds.getString("Quantity");
                     final String variety = ds.getString("Variety");
                     String deal = ds.getString("Status");
-
-
                     final String phone = ds.getString("Contact");
 
-                    if(deal.equals("onDeal"))
-                    {
+                    if (deal.equals("doneDeal")) {
+                        if (phoneNumber.equals(phone)) {
 
-                        if(phoneNumber.equals(phone)) {
-
-                            String image = ds.getString("Image");
-                            Uri imgUri = Uri.parse(image);
-
-                            cardView = new CardView(MyPosts.this);
-                            cardView.setLayoutParams(new LinearLayout.LayoutParams(1000, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            cardView = new CardView(History.this);
+                            cardView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             cardView.setRadius(20);
                             cardView.setElevation(4);
                             cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.DKGRAY));
 
-                            imgView = new ImageView(MyPosts.this);
-                            imgView.setImageURI(imgUri);
-                            imgView.setPadding(0,150,0,0);
-                            imgView.setLayoutParams(new CardView.LayoutParams(1000, 700));
 
-                            textView = new TextView(MyPosts.this);
+                            textView = new TextView(History.this);
                             textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             textView.setGravity(Gravity.CENTER);
                             textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
-                            textView.setPadding(50, 680, 0, 15);
+                            textView.setPadding(50, 15, 0, 15);
                             textView.setText("\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location);
 
-                            partView = new TextView(MyPosts.this);
+                            partView = new TextView(History.this);
                             partView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             partView.setGravity(Gravity.CENTER);
                             partView.setText(" ");
 
-                            delete = new Button(MyPosts.this);
-                            delete.setText("Deal Done");
-                            delete.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-
-                                    Map<String, Object> feed = new HashMap<>();
-                                    feed.put("Status","doneDeal");
-                                    db.collection("Feeds").document(ds.getId()).update(feed);
-
-                                    Intent intent = new Intent(MyPosts.this, MyPosts.class);
-                                    startActivity(intent);
-                                }
-                            });
-
                             if (linearLayout != null) {
                                 linearLayout.addView(cardView);
                                 cardView.addView(textView);
-                                cardView.addView(delete);
-                                cardView.addView(imgView);
                                 linearLayout.addView(partView);
                             }
                         }

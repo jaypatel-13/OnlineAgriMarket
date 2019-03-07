@@ -11,11 +11,16 @@
 
     <item
         android:id="@+id/nav_profile"
+        android:icon="@mipmap/baseline_people_black_48"
         android:title="My Profile" />
 
     <item
         android:id="@+id/nav_myposts"
         android:title="My Posts" />
+
+    <item
+        android:id="@+id/nav_myhistory"
+        android:title="My History" />
 
     <item
         android:id="@+id/nav_contact"

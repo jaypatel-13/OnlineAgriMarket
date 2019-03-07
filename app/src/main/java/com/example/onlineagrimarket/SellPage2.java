@@ -122,6 +122,12 @@ public class SellPage2 extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.nav_myhistory:
+                intent = new Intent(SellPage2.this, History.class);
+                startActivity(intent);
+                return true;
+
+
 
             case R.id.nav_logout:
                 SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -154,9 +160,8 @@ public class SellPage2 extends AppCompatActivity {
         feed.put("Location",location);
         feed.put("Seller",firstName+" "+lastName);
         feed.put("Contact",phoneNumber);
-
-    //    feed.put("Image",imgUri.toString().trim());
-
+        feed.put("Status","onDeal");
+        feed.put("Image",imgUri.toString());
 
         docRef.set(feed).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
