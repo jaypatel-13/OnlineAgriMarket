@@ -288,7 +288,7 @@ public class BuyPage extends AppCompatActivity {
                                             textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                             textView.setGravity(Gravity.CENTER);
                                             textView.setPadding(50, 680, 0, 15);
-                                            textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
+                                             textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
                                             textView.setText("Seller :" + name + "\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location + "\nContact : " + phone);
 
                                             call = new Button(BuyPage.this);

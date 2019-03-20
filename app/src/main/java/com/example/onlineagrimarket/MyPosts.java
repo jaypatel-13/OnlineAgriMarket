@@ -4,11 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,8 +24,20 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,6 +46,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 
 
 import java.util.HashMap;
@@ -118,9 +139,12 @@ public class MyPosts extends AppCompatActivity {
     Button delete;
     private LinearLayout linearLayout;
     private CardView cardView;
-    private TextView textView, partView, posts, history;
+    private TextView textView,textView1, partView, posts, history;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ImageView imgView;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    StorageReference imgRef;
     private void showFeed()
     {
         linearLayout = findViewById(R.id.rootLayout1);
@@ -143,8 +167,12 @@ public class MyPosts extends AppCompatActivity {
                     final String quantity = ds.getString("Quantity");
                     final String variety = ds.getString("Variety");
                     String deal = ds.getString("Status");
+                    String image = ds.getString("Image");
+                    storage = FirebaseStorage.getInstance();
+                    storageRef = storage.getReference();
+                    imgRef = storageRef.child(phoneNumber + "/" + Uri.parse(image));
 
-
+                    Log.i("helllo",image);
                     final String phone = ds.getString("Contact");
 
                     if(deal.equals("onDeal"))
@@ -152,8 +180,6 @@ public class MyPosts extends AppCompatActivity {
 
                         if(phoneNumber.equals(phone)) {
 
-                            String image = ds.getString("Image");
-                            Uri imgUri = Uri.parse(image);
 
                             cardView = new CardView(MyPosts.this);
                             cardView.setLayoutParams(new LinearLayout.LayoutParams(1000, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -162,9 +188,20 @@ public class MyPosts extends AppCompatActivity {
                             cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.DKGRAY));
 
                             imgView = new ImageView(MyPosts.this);
-                            imgView.setImageURI(imgUri);
-                            imgView.setPadding(0,150,0,0);
-                            imgView.setLayoutParams(new CardView.LayoutParams(1000, 700));
+                            imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Glide.with(getApplicationContext())
+                                            .load(uri)
+                                            .into(imgView);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MyPosts.this,"Image can't be loaded",Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
 
                             textView = new TextView(MyPosts.this);
                             textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -179,6 +216,7 @@ public class MyPosts extends AppCompatActivity {
                             partView.setText(" ");
 
                             delete = new Button(MyPosts.this);
+                            delete.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             delete.setText("Deal Done");
                             delete.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -195,10 +233,11 @@ public class MyPosts extends AppCompatActivity {
                             });
 
                             if (linearLayout != null) {
-                                linearLayout.addView(cardView);
+
+                                cardView.addView(imgView);
                                 cardView.addView(textView);
                                 cardView.addView(delete);
-                                cardView.addView(imgView);
+                                linearLayout.addView(cardView);
                                 linearLayout.addView(partView);
                             }
                         }
