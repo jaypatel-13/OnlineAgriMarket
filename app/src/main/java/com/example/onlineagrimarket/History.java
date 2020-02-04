@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -112,6 +116,7 @@ public class History extends AppCompatActivity {
     private CardView cardView;
     private TextView textView, partView, posts;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ImageView imgView;
 
     private void showFeed() {
 
@@ -126,6 +131,7 @@ public class History extends AppCompatActivity {
         linearLayout.addView(posts);
 
         db.collection("Feeds").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onEvent(@Nullable final QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 for (final DocumentSnapshot ds : queryDocumentSnapshots) {
@@ -135,6 +141,7 @@ public class History extends AppCompatActivity {
                     final String quantity = ds.getString("Quantity");
                     final String variety = ds.getString("Variety");
                     String deal = ds.getString("Status");
+                    String image = ds.getString("Image");
                     final String phone = ds.getString("Contact");
 
                     if (deal.equals("doneDeal")) {
@@ -144,14 +151,19 @@ public class History extends AppCompatActivity {
                             cardView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             cardView.setRadius(20);
                             cardView.setElevation(4);
-                            cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.DKGRAY));
+                            cardView.setCardBackgroundColor(0xFF6B6A6A);
 
+                            imgView = new ImageView(History.this);
+                            imgView.setImageURI(Uri.parse(image));
+                            imgView.setPadding(45,20,0,0);
+                            imgView.setCropToPadding(true);
+                            imgView.setLayoutParams(new CardView.LayoutParams(1000, 1000));
 
                             textView = new TextView(History.this);
                             textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             textView.setGravity(Gravity.CENTER);
                             textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
-                            textView.setPadding(50, 15, 0, 15);
+                            textView.setPadding(250, 950, 0, 15);
                             textView.setText("\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location);
 
                             partView = new TextView(History.this);
@@ -162,6 +174,7 @@ public class History extends AppCompatActivity {
                             if (linearLayout != null) {
                                 linearLayout.addView(cardView);
                                 cardView.addView(textView);
+                                cardView.addView(imgView);
                                 linearLayout.addView(partView);
                             }
                         }

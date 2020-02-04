@@ -51,7 +51,7 @@ import com.google.firebase.storage.StorageReference;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
-
+import com.example.onlineagrimarket.MyAppGlideModule;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -185,29 +185,36 @@ public class MyPosts extends AppCompatActivity {
                             cardView.setLayoutParams(new LinearLayout.LayoutParams(1000, ViewGroup.LayoutParams.WRAP_CONTENT));
                             cardView.setRadius(20);
                             cardView.setElevation(4);
-                            cardView.setCardBackgroundColor(ColorStateList.valueOf(Color.DKGRAY));
+                            cardView.setCardBackgroundColor(0xFF6B6A6A);
 
                             imgView = new ImageView(MyPosts.this);
-                            imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Glide.with(getApplicationContext())
-                                            .load(uri)
-                                            .into(imgView);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MyPosts.this,"Image can't be loaded",Toast.LENGTH_SHORT).show();
+                            imgView.setImageURI(Uri.parse(image));
+                            imgView.setPadding(0,150,0,0);
+                            imgView.setCropToPadding(true);
+                            imgView.setLayoutParams(new CardView.LayoutParams(1000, 1000));
 
-                                }
-                            });
+//                            imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                @Override
+//                                public void onSuccess(Uri uri) {
+//                                    Glide.with(getApplicationContext())
+//                                            .load(uri)
+//                                            .into(imgView);
+//
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Toast.makeText(MyPosts.this,"Image can't be loaded",Toast.LENGTH_SHORT).show();
+//
+//                                }
+//                            });
+
 
                             textView = new TextView(MyPosts.this);
                             textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             textView.setGravity(Gravity.CENTER);
                             textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
-                            textView.setPadding(50, 680, 0, 15);
+                            textView.setPadding(250, 1000, 0, 15);
                             textView.setText("\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location);
 
                             partView = new TextView(MyPosts.this);

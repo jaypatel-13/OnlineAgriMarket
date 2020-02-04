@@ -3,11 +3,14 @@ package com.example.onlineagrimarket;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
 
@@ -17,6 +20,7 @@ public class Contact extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+        addListenerOnButton();
     }
 
 
@@ -77,4 +81,31 @@ public class Contact extends AppCompatActivity {
         }return super.onOptionsItemSelected(item);
     }
 
+    Button callj,callb;
+    public void addListenerOnButton(){
+        callj = findViewById(R.id.button12);
+        callj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:+91 9724078844"));
+                startActivity(intent);
+            }
+        });
+
+        callb = findViewById(R.id.button13);
+        callb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:+91 9662447350"));
+                startActivity(intent);
+            }
+        });
+    }
 }
+
+
+

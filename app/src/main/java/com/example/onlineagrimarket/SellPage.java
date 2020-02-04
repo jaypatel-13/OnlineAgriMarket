@@ -121,12 +121,21 @@ public class SellPage extends AppCompatActivity {
                 String quan = quantity.getText().toString().trim();
                 String loc = location.getSelectedItem().toString().trim();
 
+                if(comm.equals("Select") || var.equals("Select") || qual.equals("Select") || quan.equals("") || quan.equals("0") || loc.equals("Select"))
+                {
+                    Toast.makeText(SellPage.this,"All fields are required.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 Intent intent = new Intent(SellPage.this, SellPage2.class);
                 intent.putExtra("comm",comm);
                 intent.putExtra("var",var);
                 intent.putExtra("qual",qual);
                 intent.putExtra("quan",quan);
                 intent.putExtra("loc",loc);
+
+
                 startActivity(intent);
             }
         });

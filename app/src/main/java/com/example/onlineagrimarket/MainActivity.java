@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public void addListenerOnButton() {
 
 //        final Context context = this;
-        Spinner cd = findViewById(R.id.spinner10);
-
-        final String code = cd.getSelectedItem().toString().trim();
 
         login = findViewById(R.id.btn_login);
         phoneNumber = findViewById(R.id.mobile_no);
@@ -78,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                phNumber = code + " " + phoneNumber.getText().toString();
+                phNumber = "+91 " + phoneNumber.getText().toString();
 
                 db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override

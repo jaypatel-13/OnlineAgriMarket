@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +34,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.protobuf.compiler.PluginProtos;
@@ -147,7 +150,7 @@ public class SellPage2 extends AppCompatActivity {
 
         }return super.onOptionsItemSelected(item);
     }
-
+    ProgressBar progressBar;
     private void startDatabase()
     {
         db = FirebaseFirestore.getInstance();
@@ -185,11 +188,6 @@ public class SellPage2 extends AppCompatActivity {
 
         StorageReference mountainsRef = storageRef.child(phoneNumber +"/" +imgUri.toString());
 
-        StorageReference mountainImagesRef = storageRef.child("images/" + phoneNumber + "/" +imgUri.toString());
-
-        mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-        mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
-
         // Get the data from an ImageView as bytes
         imgView.setDrawingCacheEnabled(true);
         imgView.buildDrawingCache();
@@ -205,14 +203,27 @@ public class SellPage2 extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
             }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                progressBar = findViewById(R.id.progressBar);
+
+                double progress = 100.0 * (taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                int currentprogress = (int) progress;
+                progressBar.setProgress(currentprogress);
+                //progressBar.animate();
+                if (currentprogress==100)
+                {
+                    Intent intent = new Intent(SellPage2.this, LoginType.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                Toast.makeText(SellPage2.this,"Image Uploaded",Toast.LENGTH_SHORT).show();
-
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
             }
         });
 
@@ -233,6 +244,7 @@ public class SellPage2 extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
         {
             imgUri = data.getData();
+            imgView.setCropToPadding(true);
             imgView.setImageURI(imgUri);
         }
     }
@@ -251,10 +263,8 @@ public class SellPage2 extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                postFeed();
-                Intent intent = new Intent(SellPage2.this, LoginType.class);
-                startActivity(intent);
 
+                postFeed();
             }
         });
     }

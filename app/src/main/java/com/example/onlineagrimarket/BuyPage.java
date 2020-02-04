@@ -162,17 +162,18 @@ public class BuyPage extends AppCompatActivity {
                                 cardView.setLayoutParams(new LinearLayout.LayoutParams(1000, ViewGroup.LayoutParams.WRAP_CONTENT));
                                 cardView.setRadius(20);
                                 cardView.setElevation(4);
-                                cardView.setCardBackgroundColor(0xFF008577);
+                                cardView.setCardBackgroundColor(0xFF6B6A6A);
 
                                 imgView = new ImageView(BuyPage.this);
                                 imgView.setImageURI(imgUri);
                                 imgView.setPadding(0,150,0,0);
-                                imgView.setLayoutParams(new CardView.LayoutParams(1000, 700));
+                                imgView.setCropToPadding(true);
+                                imgView.setLayoutParams(new CardView.LayoutParams(1000, 1000));
 
                                 textView = new TextView(BuyPage.this);
                                 textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                 textView.setGravity(Gravity.CENTER);
-                                textView.setPadding(50, 680, 0, 15);
+                                textView.setPadding(250, 1000, 0, 15);
                                 textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
                                 textView.setText("Seller :" + name + "\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location + "\nContact : " + phone);
 
@@ -225,17 +226,18 @@ public class BuyPage extends AppCompatActivity {
                                         cardView.setLayoutParams(new LinearLayout.LayoutParams(1000, ViewGroup.LayoutParams.WRAP_CONTENT));
                                         cardView.setRadius(20);
                                         cardView.setElevation(4);
-                                        cardView.setCardBackgroundColor(0xFF008577);
+                                        cardView.setCardBackgroundColor(0xFF6B6A6A);
 
                                         imgView = new ImageView(BuyPage.this);
                                         imgView.setImageURI(imgUri);
                                         imgView.setPadding(0,150,0,0);
-                                        imgView.setLayoutParams(new CardView.LayoutParams(1000, 700));
+                                        imgView.setCropToPadding(true);
+                                        imgView.setLayoutParams(new CardView.LayoutParams(1000, 1000));
 
                                         textView = new TextView(BuyPage.this);
                                         textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                         textView.setGravity(Gravity.CENTER);
-                                        textView.setPadding(50, 680, 0, 15);
+                                        textView.setPadding(250, 1000, 0, 15);
                                         textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
                                         textView.setText("Seller :" + name + "\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location + "\nContact : " + phone);
 
@@ -277,18 +279,19 @@ public class BuyPage extends AppCompatActivity {
                                             cardView.setLayoutParams(new LinearLayout.LayoutParams(1000, ViewGroup.LayoutParams.WRAP_CONTENT));
                                             cardView.setRadius(20);
                                             cardView.setElevation(4);
-                                            cardView.setCardBackgroundColor(0xFF008577);
+                                            cardView.setCardBackgroundColor(0xFF6B6A6A);
 
                                             imgView = new ImageView(BuyPage.this);
                                             imgView.setImageURI(imgUri);
+                                            imgView.setCropToPadding(true);
                                             imgView.setPadding(0,150,0,0);
-                                            imgView.setLayoutParams(new CardView.LayoutParams(1000, 700));
+                                            imgView.setLayoutParams(new CardView.LayoutParams(1000, 1000));
 
                                             textView = new TextView(BuyPage.this);
                                             textView.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                             textView.setGravity(Gravity.CENTER);
-                                            textView.setPadding(50, 680, 0, 15);
-                                             textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
+                                            textView.setPadding(250, 1000, 0, 15);
+                                            textView.setTextColor(ColorStateList.valueOf(Color.WHITE));
                                             textView.setText("Seller :" + name + "\nCommodity : " + commodity + "\nVariety : " + variety + "\nQuality : " + quality + "\nQuantity : " + quantity + " quintals" + "\nLocation : " + location + "\nContact : " + phone);
 
                                             call = new Button(BuyPage.this);
