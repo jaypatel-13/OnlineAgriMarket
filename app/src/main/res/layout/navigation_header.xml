@@ -4,14 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="@drawable/header"
     >
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:paddingTop="20dp"
-        app:srcCompat="@mipmap/baseline_people_black_48" />
-
 </RelativeLayout>

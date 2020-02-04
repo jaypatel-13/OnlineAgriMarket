@@ -2,28 +2,83 @@
     <string name="app_name">OnlineAgriMarket</string>
 
     <string-array name="commodity_arrays">
-        <item>Patato</item>
+        <item>Select</item>
+        <item>Potato</item>
         <item>Corn</item>
         <item>Banana</item>
+        <item>Grape</item>
+        <item>Tomato</item>
+        <item>Wheat</item>
+        <item>Apple</item>
+        <item>Mango</item>
+        <item>Onion</item>
+        <item>Peanut</item>
+        <item>Orange</item>
+        <item>Pinaple</item>
+        <item>Coconut</item>
+        <item>Lemon</item>
+        <item>Cabbage</item>
+        <item>Carrot</item>
+        <item>Spinach</item>
+
     </string-array>
 
     <string-array name="variety_arrays">
+        <item>Select</item>
         <item>Variety1</item>
         <item>Variety2</item>
         <item>Variety3</item>
     </string-array>
 
+    <string-array name="fromQuantity_arrays">
+        <item>Select</item>
+        <item>0</item>
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+    </string-array>
+    <string-array name="toQuantity_arrays">
+        <item>Select</item>
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+    </string-array>
+
+
+
     <string-array name="Quality_arrays">
+        <item>Select</item>
         <item>Grade A</item>
         <item>Grade B</item>
         <item>Grade C</item>
     </string-array>
 
     <string-array name="Location_arrays">
+        <item>Select</item>
         <item>Ahmedabad</item>
         <item>Surat</item>
         <item>Baroda</item>
         <item>Nadiad</item>
+        <item>Unjha</item>
+        <item>Mehsana</item>
+        <item>Rajkot</item>
+        <item>Palanpur</item>
+        <item>Anand</item>
+        <item>Bharuch</item>
+
     </string-array>
 
     <string name="open">Open</string>

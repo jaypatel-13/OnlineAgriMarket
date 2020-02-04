@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,14 +70,20 @@ public class RegistrationPage extends AppCompatActivity {
 
     }
 
+    String fname,lname,pno,email;
+
     void addUser() {
+
+
         DocumentReference docRef = db.collection("Users").document();
         // Create a new user with a first and last name
         Map<String, Object> user = new HashMap<>();
-        user.put("firstName", firstName.getText().toString().trim());
-        user.put("lastName", lastName.getText().toString().trim());
-        user.put("phoneNumber", phNumber.trim());
-        user.put("e-mail", eMail.getText().toString().trim());
+        pno = phNumber.trim();
+
+        user.put("firstName", fname);
+        user.put("lastName", lname);
+        user.put("phoneNumber", pno);
+        user.put("e-mail", email);
 
         docRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -124,6 +131,7 @@ public class RegistrationPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             addUser();
                             Toast.makeText(RegistrationPage.this, "You are successfully registered.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegistrationPage.this, MainActivity.class));
@@ -145,7 +153,24 @@ public class RegistrationPage extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
 
-                phNumber=phoneNumber.getText().toString();
+
+                fname = firstName.getText().toString().trim();
+                lname = lastName.getText().toString().trim();
+                email = eMail.getText().toString().trim();
+
+                if(fname.equals("") || lname.equals("") || pno.equals(""))
+                {
+                    Toast.makeText(RegistrationPage.this, "Please fill in required fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(email.equals(""))
+                {
+                    email = "N/A";
+                }
+
+                phNumber="+91 " + phoneNumber.getText().toString();
+
                     db.collection("Users").addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -187,4 +212,9 @@ public class RegistrationPage extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(RegistrationPage.this,MainActivity.class);
+        startActivity(intent);
+    }
 }

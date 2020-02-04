@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -22,11 +26,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.protobuf.compiler.PluginProtos;
 
 import java.io.ByteArrayOutputStream;
@@ -37,6 +47,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.onlineagrimarket.MainActivity.MyPREFERENCES;
+
 public class SellPage2 extends AppCompatActivity {
     private static final String TAG = "SellPage2";
 
@@ -44,17 +56,26 @@ public class SellPage2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_page2);
+        findViews();
         getData();
         startDatabase();
         addListenerOnButton();
-        SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
-  //      ivImage = (ImageView) findViewById(R.id.ivImage);
     }
     private FirebaseFirestore db;
-    Button btn;
+    Button btn, btn5;
     String commodity, variety, quantity, quality, location;
     SharedPreferences sharedpreferences;
     String firstName, lastName, phoneNumber;
+    ImageView imgView;
+
+    private void findViews()
+    {
+        imgView = findViewById(R.id.imageView3);
+        btn = findViewById(R.id.button4);
+        btn5 = findViewById(R.id.button5);
+
+
+    }
     private void getData()
     {
         Intent intent = getIntent();
@@ -63,8 +84,6 @@ public class SellPage2 extends AppCompatActivity {
         quality = intent.getStringExtra("qual");
         quantity = intent.getStringExtra("quan");
         location = intent.getStringExtra("loc");
-
-
 
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         firstName = sharedpreferences.getString("fnameKey","");
@@ -102,21 +121,43 @@ public class SellPage2 extends AppCompatActivity {
                 return true;
 
             case R.id.nav_profile:
-                Intent intent = new Intent(SellPage2.this, Profile.class);
+                intent = new Intent(SellPage2.this, Profile.class);
                 startActivity(intent);
                 return true;
 
+            case R.id.nav_myposts:
+                intent = new Intent(SellPage2.this, MyPosts.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.nav_myhistory:
+                intent = new Intent(SellPage2.this, History.class);
+                startActivity(intent);
+                return true;
+
+
+
             case R.id.nav_logout:
+                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                intent = new Intent(SellPage2.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+
 
         }return super.onOptionsItemSelected(item);
     }
-
+    ProgressBar progressBar;
     private void startDatabase()
     {
         db = FirebaseFirestore.getInstance();
     }
     void postFeed()
     {
+
         DocumentReference docRef = db.collection("Feeds").document();
 
         Map<String, Object> feed = new HashMap<>();
@@ -127,12 +168,13 @@ public class SellPage2 extends AppCompatActivity {
         feed.put("Location",location);
         feed.put("Seller",firstName+" "+lastName);
         feed.put("Contact",phoneNumber);
-
+        feed.put("Status","onDeal");
+        feed.put("Image",imgUri.toString());
 
         docRef.set(feed).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot added.");
+                Toast.makeText(SellPage2.this,"Data Posted.",Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -141,131 +183,89 @@ public class SellPage2 extends AppCompatActivity {
             }
         });
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        StorageReference mountainsRef = storageRef.child(phoneNumber +"/" +imgUri.toString());
+
+        // Get the data from an ImageView as bytes
+        imgView.setDrawingCacheEnabled(true);
+        imgView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imgView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                progressBar = findViewById(R.id.progressBar);
+
+                double progress = 100.0 * (taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                int currentprogress = (int) progress;
+                progressBar.setProgress(currentprogress);
+                //progressBar.animate();
+                if (currentprogress==100)
+                {
+                    Intent intent = new Intent(SellPage2.this, LoginType.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+            }
+        });
+
     }
 
-    /*
-    static final int REQUEST_CAMERA=0;
-    static final int SELECT_FILE=1;
-    private Button btnSelect;
-    private ImageView ivImage;
-    private String userChoosenTask;
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(userChoosenTask.equals("Take Photo"))
-                        cameraIntent();
-                    else if(userChoosenTask.equals("Choose from Library"))
-                        galleryIntent();
-                } else {
-                    //code for deny
-                }
-                break;
+
+    Uri imgUri;
+    private static final int PICK_IMAGE = 100;
+    private void openGallery()
+    {
+        Intent gallery = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery,PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE)
+        {
+            imgUri = data.getData();
+            imgView.setCropToPadding(true);
+            imgView.setImageURI(imgUri);
         }
     }
 
-    private void cameraIntent()
-    {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,REQUEST_CAMERA);
-    }
-    private void galleryIntent()
-    {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
-    }
-    public void selectImage()
-    {
-
-        final CharSequence[] items = { "Take Photo", "Choose from Library",
-                "Cancel" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Photo!");
-
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = Utility.checkPermission(SellPage2.this);
-                if (items[item].equals("Take Photo")) {
-                    userChoosenTask="Take Photo";
-                    if(result)
-                        cameraIntent();
-                } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask="Choose from Library";
-                    if(result)
-                        galleryIntent();
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
-    */
     public void addListenerOnButton() {
 
-        btn = findViewById(R.id.button4);
+
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
+
                 postFeed();
-                Intent intent = new Intent(SellPage2.this, LoginType.class);
-                startActivity(intent);
-
             }
         });
-/*
-        btnSelect = (Button) findViewById(R.id.btnSelectPhoto);
-        btnSelect.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-*/
     }
-  /*  private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ivImage.setImageBitmap(thumbnail);
-    }
-
-    @SuppressWarnings("deprecation")
-    private void onSelectFromGalleryResult(Intent data) {
-
-        Bitmap bm=null;
-        if (data != null) {
-            try {
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ivImage.setImageBitmap(bm);
-    }
-*/
 }
