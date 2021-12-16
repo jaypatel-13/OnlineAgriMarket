@@ -1,4 +1,8 @@
-#Online Agri Market[Project Report.pdf](https://github.com/jaypatel-13/OnlineAgriMarket/files/6566277/Project.Report.pdf)
+# Online Agri Market
+
+[Project Report.pdf](https://github.com/jaypatel-13/OnlineAgriMarket/files/6566277/Project.Report.pdf)
+
+# Project discription
 
 During my undergraduate studies I collaborated with my fellow classmate and developed an Android application using Android Studio. We developed a simple application to eliminate the middle-man(broker) between a buyer and seller in the commodity (raw crops, vegetables, etc.) market. 
 
